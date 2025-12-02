@@ -796,7 +796,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            REACT
+            PYTHON
         </Text>
 
         <Text
@@ -808,7 +808,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            ThreeJS
+            MEDIAPIPE
         </Text>
 
         <Text
@@ -820,7 +820,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            Symfony
+            OPENCV
         </Text>
 
         <Text
@@ -832,7 +832,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            Blender
+            AI TOOLS
         </Text>
 
         <Text
@@ -844,7 +844,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            Python
+            HTML
         </Text>
 
         <Text
@@ -856,7 +856,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            HTML
+            CSS
         </Text>
 
         <Text
@@ -868,7 +868,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            CSS
+            JAVASCRIPT
         </Text>
 
         <Text
@@ -880,7 +880,7 @@ export default function CameraScroll(props) {
             color="#2d1d04"
             material-opacity={0}
         >
-            JavaScript
+            SQL
         </Text>
 
         <group >
@@ -893,7 +893,7 @@ export default function CameraScroll(props) {
                 color="#2d1d04"
                 material-opacity={0}
             >
-                THREEJS CERTIFICATION
+                AI PROJECTS
             </Text>
             <Text
                 ref={threejsCertificationTextRef2}
@@ -904,7 +904,7 @@ export default function CameraScroll(props) {
                 color="#2d1d04"
                 material-opacity={0}
             >
-                BY BRUNO SIMON
+                MACHINE LEARNING
             </Text>
         </group>
 
@@ -920,7 +920,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-            Higher National Diploma in Computer Sciences
+            Jawahar Navodaya Vidyalaya Rangareddy
             </Text>
             <Text
                 ref={dut2TextRef}
@@ -932,7 +932,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-                (DUT informatique)
+                COMPUTER SCIENCE STUDENT
             </Text>
 
              <Text
@@ -945,7 +945,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-                University of La Rochelle
+                TELANGANA, INDIA
             </Text>
         </group>
 
@@ -961,7 +961,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-            Bachelor’s degree in Computer Sciences
+            Internship at IITH
             </Text>
             <Text
                 ref={licence2TextRef}
@@ -973,7 +973,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-                (Licence informatique)
+                RESEARCH & DEVELOPMENT
             </Text>
 
              <Text
@@ -986,7 +986,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-                University of La Rochelle
+                HYDERABAD, INDIA
             </Text>
         </group>
 
@@ -1002,7 +1002,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-            Master’s degree in Computer Sciences (In progress...)
+            World of Internet Certificate
             </Text>
             <Text
                 ref={master2TextRef}
@@ -1014,7 +1014,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-                (Master informatique)
+                OUTSKILLS CERTIFICATE
             </Text>
 
              <Text
@@ -1027,7 +1027,7 @@ export default function CameraScroll(props) {
                 material-side={FrontSide}
                 material-opacity={0}
             >
-                University of Bordeaux
+                ONLINE CERTIFICATION
             </Text>
         </group>
 
@@ -1041,7 +1041,7 @@ export default function CameraScroll(props) {
                 maxWidth={1}
                 material-opacity={0}
             >
-                hypnotizing shader
+                AI PROJECTS
              </Text>
 
              <Text
@@ -1053,7 +1053,7 @@ export default function CameraScroll(props) {
                 maxWidth={1}
                 material-opacity={0}
             >
-                ...using GLSL
+                MACHINE LEARNING
              </Text>
 
         </group>
@@ -1068,7 +1068,7 @@ export default function CameraScroll(props) {
             maxWidth={1}
             material-opacity={0}
         >
-            Particles Morphing
+            SAM Assistant
         </Text>
 
         <group>       
@@ -1082,7 +1082,7 @@ export default function CameraScroll(props) {
                 maxWidth={1}
                 material-opacity={0}
             >
-                i love music ...
+                Computer Vision
             </Text>
 
             <Text
@@ -1095,7 +1095,7 @@ export default function CameraScroll(props) {
                 maxWidth={1}
                 material-opacity={0}
             >
-                I have a pretty cool vinyls collection
+                Gesture Control Projects
             </Text>
         </group>
 
@@ -1110,7 +1110,7 @@ export default function CameraScroll(props) {
                 maxWidth={1}
                 material-opacity={0}
             >
-                I like sports
+                Web Applications
             </Text>
             <Text
                 ref={sport2TextRef}
@@ -1122,7 +1122,7 @@ export default function CameraScroll(props) {
                 maxWidth={1}
                 material-opacity={0}                
             >
-                I practice boxing
+                JavaScript & TypeScript
             </Text>
         </group>
 
@@ -1135,7 +1135,7 @@ export default function CameraScroll(props) {
             maxWidth={1}
             material-opacity={0}                
         >
-            Let's keep in touch !
+            Contact: daivik1520@gmail.com
         </Text>
 
     </>

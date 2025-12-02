@@ -9,7 +9,7 @@ import Loader from './Components/Loader.jsx'
 import App from './App.jsx'
 import './index.css'
 
-console.log("Hi if you notice a bug please contact me max2002guillon@gmail.com")
+console.log("Hi if you notice a bug please contact me daivik1520@gmail.com")
 
 
 const isMobile = () => {
@@ -41,31 +41,31 @@ root.render(
         <Analytics/>
         <div style={{ display: "none" }}>
   <section aria-hidden="true">
-    <h1>Maxime Guillon - Creative Developer</h1>
-    <h2>Computer Science Student at Bordeaux University</h2>
-    <h2>Three.js and React Three Fiber Expert</h2>
-    <h2>Specialized in 3D Web Development</h2>
+    <h1>Daivik Reddy - AI Enthusiast</h1>
+    <h2>Computer Science Student</h2>
+    <h2>Python and AI Specialist</h2>
+    <h2>Specialized in Artificial Intelligence and Machine Learning</h2>
   </section>
   <section aria-hidden="true">
     <h2>Skills and Expertise</h2>
     <ul>
-      <li>Three.js Developer</li>
-      <li>React Three Fiber Developer</li>
-      <li>GSAP Developer</li>
-      <li>3D Web Experiences</li>
-      <li>Creative Coding</li>
+      <li>Python Developer</li>
+      <li>AI and Machine Learning Engineer</li>
+      <li>Computer Vision Specialist</li>
+      <li>OpenCV and MediaPipe Developer</li>
+      <li>JavaScript and React Developer</li>
     </ul>
   </section>
   <section aria-hidden="true">
     <p>
-      Welcome to the 3D portfolio of Maxime Guillon. This immersive portfolio has 
+      Welcome to the 3D portfolio of Daivik Reddy. This immersive portfolio has 
       been created using React Three Fiber and GSAP, with custom 3D models designed 
-      in Blender. Explore innovative web experiences that blend creativity and technology.
+      in Blender. Explore innovative AI and web development projects that blend creativity and technology.
     </p>
   </section>
   <noscript>
     <p>
-      This 3D portfolio of Maxime Guillon showcases creative web development using 
+      This 3D portfolio of Daivik Reddy showcases creative web development and AI projects using 
       React Three Fiber, Three.js, and GSAP. Please enable JavaScript to explore 
       the immersive experience.
     </p>

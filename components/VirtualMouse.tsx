@@ -104,7 +104,10 @@ export default function VirtualMouse() {
             scrollVelocity.current = 0; // Stop scrolling if clicking
         }
         // 2. Scroll (Index + Middle Joined)
-        else if (rightClickDist < CLICK_THRESHOLD) {
+        // Check if Index and Middle fingers are close (Pinch/Joined)
+        const SCROLL_GESTURE_THRESHOLD = 0.1; // Increased from 0.05 to 0.1 for easier activation
+
+        if (rightClickDist < SCROLL_GESTURE_THRESHOLD) {
             currentGesture = "scroll";
 
             // Wrist (0) and Middle Finger Tip (12)
@@ -113,14 +116,14 @@ export default function VirtualMouse() {
 
             // Calculate vertical difference
             const dy = tip.y - wrist.y;
-            const SCROLL_DEADZONE = 0.15; // Increased deadzone for stability
+            const SCROLL_DEADZONE = 0.05; // Reduced deadzone for responsiveness
 
             if (dy > SCROLL_DEADZONE) {
                 // Pointing Down -> Scroll Down
-                scrollVelocity.current = 20;
+                scrollVelocity.current = 25;
             } else if (dy < -SCROLL_DEADZONE) {
                 // Pointing Up -> Scroll Up
-                scrollVelocity.current = -20;
+                scrollVelocity.current = -25;
             } else {
                 scrollVelocity.current = 0;
             }
@@ -131,7 +134,7 @@ export default function VirtualMouse() {
         }
 
         // 3. Right Click (Index + Ring - Reassigned)
-        if (activeGesture !== "scroll" && scrollDist < CLICK_THRESHOLD) {
+        if (activeGesture !== "scroll" && scrollDist < 0.05) { // Keep strict for click
             currentGesture = "right-click";
             // ... (context menu logic)
             if (now - lastClickTime.current > 500) {

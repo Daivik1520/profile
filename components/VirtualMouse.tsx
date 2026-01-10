@@ -85,8 +85,26 @@ export default function VirtualMouse() {
                 triggerClick(smoothPos.current.x, smoothPos.current.y);
             }
         }
-        // 2. Right Click (Index + Middle)
+        // 2. Scroll (Index + Middle Joined)
+        // User Logic: "Join index and middle... if hand is up scroll up... if pointing down scroll down"
         else if (rightClickDist < CLICK_THRESHOLD) {
+            currentGesture = "scroll";
+
+            // Determine orientation (Pointing Up or Down)
+            // Y increases downwards in screen coords.
+            // Upright (Pointing Up): Tip.y < Wrist.y
+            // Pointing Down: Tip.y > Wrist.y
+
+            const isPointingDown = middleTip.y > landmarks[0].y; // Wrist is landmarks[0]
+
+            if (isPointingDown) {
+                window.scrollBy({ top: 15, behavior: "auto" }); // Scroll Down
+            } else {
+                window.scrollBy({ top: -15, behavior: "auto" }); // Scroll Up
+            }
+        }
+        // 3. Right Click (Index + Ring - Reassigned)
+        else if (scrollDist < CLICK_THRESHOLD) {
             currentGesture = "right-click";
             if (now - lastClickTime.current > 500) {
                 lastClickTime.current = now;
@@ -103,28 +121,8 @@ export default function VirtualMouse() {
                 }
             }
         }
-        // 3. Auto Scroll (Edge Detection)
-        const SCROLL_ZONE = 100; // pixels
-        const SCROLL_SPEED = 15;
 
-        if (activeGesture !== "drag") { // Don't auto-scroll while dragging unless logic refined
-            if (smoothPos.current.y < SCROLL_ZONE) {
-                currentGesture = "scroll";
-                window.scrollBy({ top: -SCROLL_SPEED, behavior: "auto" });
-            } else if (smoothPos.current.y > window.innerHeight - SCROLL_ZONE) {
-                currentGesture = "scroll";
-                window.scrollBy({ top: SCROLL_SPEED, behavior: "auto" });
-            }
-        }
-
-        // 4. Scroll Gesture (Index + Ring) - Keeping as backup but prioritized edge scroll
-        if (currentGesture === "move" && scrollDist < CLICK_THRESHOLD) {
-            // ... existing pinch scroll logic can remain or be removed if user wants only edge scroll
-            // Let's keep it as secondary or remove if requested "hard to do". 
-            // User said "scroll is hard to do so... make... edge scroll". 
-            // I will replace pinch scrolling with edge scrolling primarily, 
-            // or just let edge scrolling take precedence.
-        }
+        /* Removed Auto/Edge Scroll as per user request to use specific gesture instead */
 
         setActiveGesture(currentGesture);
     }, []);
@@ -263,12 +261,16 @@ export default function VirtualMouse() {
                             <span className="text-white/40">Left Click</span>
                         </div>
                         <div className="flex items-center justify-between">
-                            <span>✌️ Pinch (Index+Middle)</span>
+                            <span>✌️ (Index+Middle)</span>
+                            <span className="text-white/40">Scroll</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span>🤘 (Index+Ring)</span>
                             <span className="text-white/40">Right Click</span>
                         </div>
                         <div className="border-t border-white/10 pt-2 mt-2">
                             <p className="text-xs text-center text-emerald-400 font-medium tracking-wide">
-                                ↕️ HOVER TOP/BOTTOM TO SCROLL
+                                POINT UP/DOWN TO SCROLL
                             </p>
                         </div>
                     </div>

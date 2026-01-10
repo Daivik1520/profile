@@ -139,17 +139,24 @@ export default function VirtualMouse() {
                 // Pointing Up
                 scrollVelocity.current = -finalSpeed;
             } else {
+                // If in scroll gesture but flat (in deadzone), STOP scrolling
                 scrollVelocity.current = 0;
             }
         }
+        else if (currentGesture === "move") {
+            // "Move" (Open Hand) does NOT stop scrolling. 
+            // This implements "Sticky Scroll" / Cruise Control.
+            // Velocity remains whatever it was last set to.
+        }
         else {
-            // Reset velocity if not in scroll gesture
+            // Any other gesture (Click, Right-Click, etc) STOPS scrolling
             scrollVelocity.current = 0;
         }
 
         // 3. Right Click (Index + Ring - Reassigned)
         if (activeGesture !== "scroll" && scrollDist < 0.05) { // Keep strict for click
             currentGesture = "right-click";
+            scrollVelocity.current = 0; // Ensure stop
             // ... (context menu logic)
             if (now - lastClickTime.current > 500) {
                 lastClickTime.current = now;

@@ -7,6 +7,7 @@ interface TextScrambleProps {
     className?: string;
     delay?: number;
     duration?: number;
+    scrambleOnHover?: boolean;
 }
 
 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
@@ -16,22 +17,23 @@ export default function TextScramble({
     className = "",
     delay = 0,
     duration = 1500,
+    scrambleOnHover = false,
 }: TextScrambleProps) {
     const [displayText, setDisplayText] = useState(text);
     const [hasStarted, setHasStarted] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
     const elementRef = useRef<HTMLSpanElement>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    const scramble = useCallback(() => {
-        if (hasStarted) return;
-        setHasStarted(true);
+    const performScramble = useCallback(() => {
+        if (intervalRef.current) clearInterval(intervalRef.current);
 
         const originalText = text;
         const length = originalText.length;
         const totalFrames = Math.floor(duration / 30);
         let frame = 0;
 
-        // Start with scrambled text
+        // Start with scrambled text immediately
         setDisplayText(
             originalText
                 .split("")
@@ -68,7 +70,22 @@ export default function TextScramble({
                 setDisplayText(originalText);
             }
         }, 30);
-    }, [text, duration, hasStarted]);
+    }, [text, duration]);
+
+    const scramble = useCallback(() => {
+        if (hasStarted) return;
+        setHasStarted(true);
+        performScramble();
+    }, [hasStarted, performScramble]);
+
+    const handleMouseEnter = () => {
+        if (scrambleOnHover && !isHovering) {
+            setIsHovering(true);
+            performScramble();
+            // Reset hovering state after animation ensures it can trigger again later
+            setTimeout(() => setIsHovering(false), duration);
+        }
+    };
 
     useEffect(() => {
         // Cleanup on unmount
@@ -124,7 +141,11 @@ export default function TextScramble({
     }, [delay, scramble, hasStarted]);
 
     return (
-        <span ref={elementRef} className={`inline-block ${className}`}>
+        <span
+            ref={elementRef}
+            className={`inline-block ${className}`}
+            onMouseEnter={handleMouseEnter}
+        >
             {displayText}
         </span>
     );

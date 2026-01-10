@@ -16,12 +16,15 @@ interface HandLandmark {
     z: number;
 }
 
+type GestureType = "move" | "click" | "right-click" | "scroll" | "drag" | null;
+
 export default function VirtualMouse() {
     const [isEnabled, setIsEnabled] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-    const [isClicking, setIsClicking] = useState(false);
+    const [activeGesture, setActiveGesture] = useState<GestureType>(null);
     const [showPreview, setShowPreview] = useState(true);
+    const [scrollSpeed, setScrollSpeed] = useState(0);
 
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,16 +44,18 @@ export default function VirtualMouse() {
 
         const landmarks = results.multiHandLandmarks[0];
 
-        // Index finger tip (landmark 8)
+        // Index finger tip (8) & Thumb tip (4)
         const indexTip = landmarks[8];
-        // Thumb tip (landmark 4)
         const thumbTip = landmarks[4];
+        const middleTip = landmarks[12];
+        const ringTip = landmarks[16];
+        const pinkyTip = landmarks[20];
 
         // Convert to screen coordinates (mirror the x-axis)
         const targetX = (1 - indexTip.x) * window.innerWidth;
         const targetY = indexTip.y * window.innerHeight;
 
-        // Smooth the cursor movement
+        // Smooth the cursor movement (Exponential smoothing factor 0.3 matching python)
         smoothPos.current.x += (targetX - smoothPos.current.x) * 0.3;
         smoothPos.current.y += (targetY - smoothPos.current.y) * 0.3;
 
@@ -59,43 +64,72 @@ export default function VirtualMouse() {
             y: smoothPos.current.y
         });
 
-        // Check for pinch gesture (click)
-        const pinchDistance = calculateDistance(indexTip, thumbTip);
-        const isPinching = pinchDistance < 0.05;
+        // Calculate distances for gestures
+        const pinchDist = calculateDistance(indexTip, thumbTip);
+        const rightClickDist = calculateDistance(indexTip, middleTip);
+        const scrollDist = calculateDistance(indexTip, ringTip);
 
-        setIsClicking(isPinching);
+        // Thresholds (normalized coordinates 0-1)
+        const CLICK_THRESHOLD = 0.05;
 
-        // Trigger click
-        if (isPinching) {
-            const now = Date.now();
+        // Detect Gestures
+        let currentGesture: GestureType = "move";
+        const now = Date.now();
+
+        // 1. Left Click (Index + Thumb)
+        if (pinchDist < CLICK_THRESHOLD) {
+            currentGesture = "click";
             if (now - lastClickTime.current > 500) {
                 lastClickTime.current = now;
-
-                // Find element at cursor position and click it
-                const element = document.elementFromPoint(
-                    smoothPos.current.x,
-                    smoothPos.current.y
-                );
-
+                triggerClick(smoothPos.current.x, smoothPos.current.y);
+            }
+        }
+        // 2. Right Click (Index + Middle)
+        else if (rightClickDist < CLICK_THRESHOLD) {
+            currentGesture = "right-click";
+            if (now - lastClickTime.current > 500) {
+                lastClickTime.current = now;
+                // Dispatch context menu event
+                const element = document.elementFromPoint(smoothPos.current.x, smoothPos.current.y);
                 if (element) {
-                    // Dispatch click event
-                    const clickEvent = new MouseEvent("click", {
+                    element.dispatchEvent(new MouseEvent("contextmenu", {
                         bubbles: true,
                         cancelable: true,
                         view: window,
                         clientX: smoothPos.current.x,
                         clientY: smoothPos.current.y,
-                    });
-                    element.dispatchEvent(clickEvent);
-
-                    // Also try clicking if it's a link or button
-                    if (element instanceof HTMLElement) {
-                        element.click();
-                    }
+                    }));
                 }
             }
         }
+        // 3. Scroll (Index + Ring)
+        else if (scrollDist < CLICK_THRESHOLD) {
+            currentGesture = "scroll";
+            // Scroll direction based on Ring finger Y vs Index Y (like python script)
+            // If ring is ABOVE index (smaller Y), scroll UP. 
+            // Note: landmarks.y increases downwards.
+            const scrollAmount = (ringTip.y < indexTip.y) ? -15 : 15;
+            window.scrollBy({ top: scrollAmount, behavior: "auto" });
+        }
+
+        setActiveGesture(currentGesture);
     }, []);
+
+    const triggerClick = (x: number, y: number) => {
+        const element = document.elementFromPoint(x, y);
+        if (element) {
+            const clickEvent = new MouseEvent("click", {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+                clientX: x,
+                clientY: y,
+            });
+            element.dispatchEvent(clickEvent);
+            if (element instanceof HTMLElement) element.click();
+        }
+    };
+
 
     const startCamera = useCallback(async () => {
         if (!videoRef.current) return;
@@ -189,8 +223,8 @@ export default function VirtualMouse() {
             <motion.button
                 onClick={() => setIsEnabled(!isEnabled)}
                 className={`fixed bottom-6 right-6 z-[8000] px-5 py-3 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300 ${isEnabled
-                        ? "bg-violet-500 text-white shadow-lg shadow-violet-500/30"
-                        : "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20"
+                    ? "bg-violet-500 text-white shadow-lg shadow-violet-500/30"
+                    : "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20"
                     }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -251,18 +285,36 @@ export default function VirtualMouse() {
                         {/* Main cursor */}
                         <motion.div
                             animate={{
-                                scale: isClicking ? 0.8 : 1,
-                                backgroundColor: isClicking ? "#8B5CF6" : "#ffffff",
+                                scale: activeGesture === "click" ? 0.8 : 1,
+                                backgroundColor: activeGesture === "click" ? "#8B5CF6" : "#ffffff",
+                                borderColor: activeGesture === "right-click" ? "#10B981" :
+                                    activeGesture === "scroll" ? "#3B82F6" : "#ffffff"
                             }}
-                            className="w-6 h-6 rounded-full border-2 border-white shadow-lg"
+                            className="w-6 h-6 rounded-full border-2 border-white shadow-lg flex items-center justify-center"
                             style={{
-                                boxShadow: isClicking
+                                boxShadow: activeGesture === "click"
                                     ? "0 0 30px rgba(139, 92, 246, 0.8)"
                                     : "0 0 20px rgba(255, 255, 255, 0.5)",
                             }}
-                        />
+                        >
+                            {/* Scroll Indicator Icon */}
+                            {activeGesture === "scroll" && (
+                                <span className="text-[10px]">↕</span>
+                            )}
+                        </motion.div>
+
+                        {/* Gesture Label */}
+                        <motion.div
+                            animate={{ opacity: activeGesture !== "move" ? 1 : 0, y: 20 }}
+                            className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs text-white"
+                        >
+                            {activeGesture === "click" && "Left Click"}
+                            {activeGesture === "right-click" && "Right Click"}
+                            {activeGesture === "scroll" && "Scroll"}
+                        </motion.div>
+
                         {/* Click ripple */}
-                        {isClicking && (
+                        {activeGesture === "click" && (
                             <motion.div
                                 initial={{ scale: 0.5, opacity: 1 }}
                                 animate={{ scale: 2, opacity: 0 }}

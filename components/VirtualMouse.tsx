@@ -33,6 +33,23 @@ export default function VirtualMouse() {
     const cameraRef = useRef<any>(null);
     const lastClickTime = useRef(0);
     const smoothPos = useRef({ x: 0, y: 0 });
+    const scrollVelocity = useRef(0);
+
+    // Scroll Loop
+    useEffect(() => {
+        let textAnimationId: number;
+
+        const scrollLoop = () => {
+            if (scrollVelocity.current !== 0) {
+                window.scrollBy({ top: scrollVelocity.current, behavior: "auto" });
+            }
+            textAnimationId = requestAnimationFrame(scrollLoop);
+        };
+
+        textAnimationId = requestAnimationFrame(scrollLoop);
+
+        return () => cancelAnimationFrame(textAnimationId);
+    }, []);
 
     const calculateDistance = (p1: HandLandmark, p2: HandLandmark) => {
         return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
@@ -84,6 +101,7 @@ export default function VirtualMouse() {
                 lastClickTime.current = now;
                 triggerClick(smoothPos.current.x, smoothPos.current.y);
             }
+            scrollVelocity.current = 0; // Stop scrolling if clicking
         }
         // 2. Scroll (Index + Middle Joined)
         else if (rightClickDist < CLICK_THRESHOLD) {
@@ -93,26 +111,29 @@ export default function VirtualMouse() {
             const wrist = landmarks[0];
             const tip = middleTip;
 
-            // Calculate vertical difference (normalized 0-1)
-            // positive dy means tip is BELOW wrist (Pointing Down)
-            // negative dy means tip is ABOVE wrist (Pointing Up)
+            // Calculate vertical difference
             const dy = tip.y - wrist.y;
-
-            // Dead zone to prevent jitter (e.g., +/- 0.1)
-            const SCROLL_DEADZONE = 0.1;
-            const SCROLL_SPEED = 25; // Smoother, faster scroll
+            const SCROLL_DEADZONE = 0.15; // Increased deadzone for stability
 
             if (dy > SCROLL_DEADZONE) {
-                // Clearly pointing down
-                window.scrollBy({ top: SCROLL_SPEED, behavior: "auto" });
+                // Pointing Down -> Scroll Down
+                scrollVelocity.current = 20;
             } else if (dy < -SCROLL_DEADZONE) {
-                // Clearly pointing up
-                window.scrollBy({ top: -SCROLL_SPEED, behavior: "auto" });
+                // Pointing Up -> Scroll Up
+                scrollVelocity.current = -20;
+            } else {
+                scrollVelocity.current = 0;
             }
         }
+        else {
+            // Reset velocity if not in scroll gesture
+            scrollVelocity.current = 0;
+        }
+
         // 3. Right Click (Index + Ring - Reassigned)
-        else if (scrollDist < CLICK_THRESHOLD) {
+        if (activeGesture !== "scroll" && scrollDist < CLICK_THRESHOLD) {
             currentGesture = "right-click";
+            // ... (context menu logic)
             if (now - lastClickTime.current > 500) {
                 lastClickTime.current = now;
                 // Dispatch context menu event

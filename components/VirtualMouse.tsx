@@ -86,21 +86,28 @@ export default function VirtualMouse() {
             }
         }
         // 2. Scroll (Index + Middle Joined)
-        // User Logic: "Join index and middle... if hand is up scroll up... if pointing down scroll down"
         else if (rightClickDist < CLICK_THRESHOLD) {
             currentGesture = "scroll";
 
-            // Determine orientation (Pointing Up or Down)
-            // Y increases downwards in screen coords.
-            // Upright (Pointing Up): Tip.y < Wrist.y
-            // Pointing Down: Tip.y > Wrist.y
+            // Wrist (0) and Middle Finger Tip (12)
+            const wrist = landmarks[0];
+            const tip = middleTip;
 
-            const isPointingDown = middleTip.y > landmarks[0].y; // Wrist is landmarks[0]
+            // Calculate vertical difference (normalized 0-1)
+            // positive dy means tip is BELOW wrist (Pointing Down)
+            // negative dy means tip is ABOVE wrist (Pointing Up)
+            const dy = tip.y - wrist.y;
 
-            if (isPointingDown) {
-                window.scrollBy({ top: 15, behavior: "auto" }); // Scroll Down
-            } else {
-                window.scrollBy({ top: -15, behavior: "auto" }); // Scroll Up
+            // Dead zone to prevent jitter (e.g., +/- 0.1)
+            const SCROLL_DEADZONE = 0.1;
+            const SCROLL_SPEED = 25; // Smoother, faster scroll
+
+            if (dy > SCROLL_DEADZONE) {
+                // Clearly pointing down
+                window.scrollBy({ top: SCROLL_SPEED, behavior: "auto" });
+            } else if (dy < -SCROLL_DEADZONE) {
+                // Clearly pointing up
+                window.scrollBy({ top: -SCROLL_SPEED, behavior: "auto" });
             }
         }
         // 3. Right Click (Index + Ring - Reassigned)

@@ -120,10 +120,10 @@ export default function VirtualMouse() {
 
             if (dy > SCROLL_DEADZONE) {
                 // Pointing Down -> Scroll Down
-                scrollVelocity.current = 25;
+                scrollVelocity.current = 40;
             } else if (dy < -SCROLL_DEADZONE) {
                 // Pointing Up -> Scroll Up
-                scrollVelocity.current = -25;
+                scrollVelocity.current = -40;
             } else {
                 scrollVelocity.current = 0;
             }

@@ -118,12 +118,26 @@ export default function VirtualMouse() {
             const dy = tip.y - wrist.y;
             const SCROLL_DEADZONE = 0.05; // Reduced deadzone for responsiveness
 
+            // Dynamic Speed based on tilt amount
+            const tiltMagnitude = Math.abs(dy);
+            const excessTilt = Math.max(0, tiltMagnitude - SCROLL_DEADZONE);
+
+            // Speed ramps up from 50 to 500 based on how "hard" you tilt
+            const baseSpeed = 50;
+            const multiplier = 2000; // sensitivity multiplier
+            const targetSpeed = baseSpeed + (excessTilt * multiplier);
+
+            // Clamped max speed
+            const maxSpeed = 400;
+            const finalSpeed = Math.min(targetSpeed, maxSpeed);
+
             if (dy > SCROLL_DEADZONE) {
-                // Pointing Down -> Scroll Down
-                scrollVelocity.current = 200;
+                // Pointing Down
+                // Simple lerp for smoothness could be active here, but strict setting is more responsive
+                scrollVelocity.current = finalSpeed;
             } else if (dy < -SCROLL_DEADZONE) {
-                // Pointing Up -> Scroll Up
-                scrollVelocity.current = -200;
+                // Pointing Up
+                scrollVelocity.current = -finalSpeed;
             } else {
                 scrollVelocity.current = 0;
             }

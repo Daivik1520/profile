@@ -283,76 +283,97 @@ export default function VirtualMouse() {
 
     return (
         <>
-            {/* Help Card */}
-            {isEnabled && showHelp && (
-                <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    className="fixed top-24 right-6 z-[8000] w-64 bg-black/80 backdrop-blur-md border border-white/10 rounded-2xl p-4 text-white shadow-2xl"
-                >
-                    <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-bold text-violet-400 flex items-center gap-2">
-                            <span className="text-xl">🎮</span> Controls
-                        </h3>
-                        <button
-                            onClick={() => setShowHelp(false)}
-                            className="text-white/40 hover:text-white"
+            {/* Minimal Help Card */}
+            <AnimatePresence>
+                {isEnabled && showHelp && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                        className="fixed bottom-24 right-6 z-[8000] w-72 bg-neutral-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-white/90 shadow-2xl"
+                    >
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-sm font-semibold tracking-wide flex items-center gap-2 text-white/60 uppercase">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
+                                Gesture Controls
+                            </h3>
+                            <button
+                                onClick={() => setShowHelp(false)}
+                                className="text-white/20 hover:text-white transition-colors"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+
+                        <div className="space-y-3 text-sm">
+                            <div className="flex items-center justify-between group">
+                                <span className="flex items-center gap-3 text-white/60 group-hover:text-white transition-colors">
+                                    <span className="p-1.5 bg-white/5 rounded-md">👆</span> Point
+                                </span>
+                                <span className="font-medium">Move</span>
+                            </div>
+                            <div className="flex items-center justify-between group">
+                                <span className="flex items-center gap-3 text-white/60 group-hover:text-white transition-colors">
+                                    <span className="p-1.5 bg-white/5 rounded-md">👌</span> Pinch
+                                </span>
+                                <span className="font-medium">Click</span>
+                            </div>
+                            <div className="flex items-center justify-between group">
+                                <span className="flex items-center gap-3 text-white/60 group-hover:text-white transition-colors">
+                                    <span className="p-1.5 bg-white/5 rounded-md">✌️</span> Join + Tilt
+                                </span>
+                                <span className="font-medium">Scroll</span>
+                            </div>
+                            <div className="flex items-center justify-between group">
+                                <span className="flex items-center gap-3 text-white/60 group-hover:text-white transition-colors">
+                                    <span className="p-1.5 bg-white/5 rounded-md">🤘</span> Ring Pinch
+                                </span>
+                                <span className="font-medium">Right Click</span>
+                            </div>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-white/5 text-[10px] text-white/30 text-center uppercase tracking-widest font-medium">
+                            Powered by MediaPipe
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Controls Bar (Toggle + Help + Preview) */}
+            <div className="fixed bottom-6 right-6 z-[8000] flex items-center gap-3">
+
+                {/* Minimized Help Trigger */}
+                <AnimatePresence>
+                    {isEnabled && !showHelp && (
+                        <motion.button
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.5, opacity: 0 }}
+                            onClick={() => setShowHelp(true)}
+                            className="w-10 h-10 rounded-full bg-neutral-900/80 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-all shadow-lg"
                         >
-                            ✕
-                        </button>
-                    </div>
+                            ?
+                        </motion.button>
+                    )}
+                </AnimatePresence>
 
-                    <div className="space-y-2 text-sm text-white/80">
-                        <div className="flex items-center justify-between">
-                            <span>👆 Point</span>
-                            <span className="text-white/40">Move Cursor</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span>👌 Pinch (Index+Thumb)</span>
-                            <span className="text-white/40">Left Click</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span>✌️ (Index+Middle)</span>
-                            <span className="text-white/40">Scroll</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span>🤘 (Index+Ring)</span>
-                            <span className="text-white/40">Right Click</span>
-                        </div>
-                        <div className="border-t border-white/10 pt-2 mt-2">
-                            <p className="text-xs text-center text-emerald-400 font-medium tracking-wide">
-                                POINT UP/DOWN TO SCROLL
-                            </p>
-                        </div>
-                    </div>
-                </motion.div>
-            )}
-
-            {/* Show Help Button (when hidden) */}
-            {isEnabled && !showHelp && (
-                <button
-                    onClick={() => setShowHelp(true)}
-                    className="fixed top-24 right-6 z-[8000] w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/20 transition-colors"
+                {/* Main Toggle Button */}
+                <motion.button
+                    layout
+                    onClick={() => setIsEnabled(!isEnabled)}
+                    className={`h-12 px-6 rounded-full font-medium text-sm flex items-center gap-3 transition-all duration-500 shadow-xl backdrop-blur-xl border ${isEnabled
+                        ? "bg-neutral-900/90 border-white/10 text-white"
+                        : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                        }`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                 >
-                    ?
-                </button>
-            )}
-
-            {/* Toggle Button */}
-            <motion.button
-
-                onClick={() => setIsEnabled(!isEnabled)}
-                className={`fixed bottom-6 right-6 z-[8000] px-5 py-3 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300 ${isEnabled
-                    ? "bg-violet-500 text-white shadow-lg shadow-violet-500/30"
-                    : "bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20"
-                    }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-            >
-                <span className="text-lg">🖐️</span>
-                {isLoading ? "Starting..." : isEnabled ? "Gesture ON" : "Gesture Control"}
-            </motion.button>
+                    <div className={`relative w-2 h-2 rounded-full ${isEnabled ? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]" : "bg-neutral-500"}`}>
+                        {isEnabled && <span className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-75"></span>}
+                    </div>
+                    <span>{isLoading ? "Starting..." : isEnabled ? "Active" : "Enable Gestures"}</span>
+                </motion.button>
+            </div>
 
             {/* Camera Preview */}
             <AnimatePresence>
@@ -361,12 +382,12 @@ export default function VirtualMouse() {
                         initial={{ opacity: 0, scale: 0.8, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                        className="fixed bottom-20 right-6 z-[8000]"
+                        className="fixed bottom-24 right-6 z-[8000] origin-bottom-right"
                     >
                         <div className="relative">
                             <video
                                 ref={videoRef}
-                                className={`rounded-2xl border-2 border-violet-500/50 shadow-lg shadow-violet-500/20 ${showPreview ? "w-48 h-36" : "w-0 h-0"
+                                className={`rounded-xl border border-white/10 shadow-2xl bg-black ${showPreview ? "w-40 h-28 object-cover" : "w-0 h-0"
                                     }`}
                                 autoPlay
                                 playsInline
@@ -375,15 +396,11 @@ export default function VirtualMouse() {
                             />
                             <button
                                 onClick={() => setShowPreview(!showPreview)}
-                                className="absolute -top-2 -right-2 w-6 h-6 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white text-xs hover:bg-white/20"
+                                className="absolute -top-3 -right-3 w-6 h-6 bg-neutral-800 border border-white/10 rounded-full flex items-center justify-center text-white/60 text-[10px] hover:text-white hover:bg-neutral-700 shadow-lg transition-colors z-10"
                             >
-                                {showPreview ? "−" : "+"}
+                                {showPreview ? "✕" : "👁"}
                             </button>
-                            {!showPreview && (
-                                <div className="w-12 h-12 bg-violet-500/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                                    <span className="text-2xl">👁️</span>
-                                </div>
-                            )}
+
                         </div>
                     </motion.div>
                 )}

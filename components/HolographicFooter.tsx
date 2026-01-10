@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function HolographicFooter() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const animationRef = useRef<number>();
+    const animationRef = useRef<number | null>(null);
     const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {

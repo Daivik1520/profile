@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useTransform, MotionValue } from "framer-motion";
+import TextScramble from "./TextScramble";
 
 interface OverlayProps {
     scrollProgress: MotionValue<number>;
@@ -145,6 +146,7 @@ export default function Overlay({ scrollProgress }: OverlayProps) {
                     y: heroY,
                 }}
             >
+
                 {/* Main Name */}
                 <motion.h1
                     initial={{ opacity: 0, y: 40 }}
@@ -162,7 +164,7 @@ export default function Overlay({ scrollProgress }: OverlayProps) {
                         marginBottom: "16px",
                     }}
                 >
-                    DAIVIK REDDY
+                    <TextScramble text="DAIVIK REDDY" startDelay={8} />
                 </motion.h1>
 
                 {/* Tagline */}

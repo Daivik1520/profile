@@ -1,377 +1,331 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState } from "react";
 import Link from "next/link";
-import ParticleBackground from "@/components/ParticleBackground";
-import TiltCard from "@/components/TiltCard";
+import NavMenu from "@/components/NavMenu";
+import EmailFab from "@/components/EmailFab";
+import FooterMinimal from "@/components/FooterMinimal";
+import TextSplitAnimation from "@/components/TextSplitAnimation";
+import PageTransition from "@/components/PageTransition";
 
 interface Project {
-    name: string;
-    description: string;
-    tech?: string;
-    license?: string;
-    link?: string;
+  name: string;
+  description: string;
+  tech?: string;
+  license?: string;
+  link: string;
+  icon: string;
 }
 
 interface Category {
-    title: string;
-    projects: Project[];
+  title: string;
+  projects: Project[];
 }
 
-const categories: Category[] = [
-    {
-        title: "Recent Projects",
-        projects: [
-            {
-                name: "Search2Download",
-                description: "Turn Google searches into direct downloads by programmatically executing search queries and retrieving target content in seconds",
-                link: "https://github.com/Daivik1520/Search2Download",
-            },
-            {
-                name: "terminal_tunes",
-                description: "Terminal-based music player application",
-                tech: "JavaScript",
-                link: "https://github.com/Daivik1520/teminal_tunes",
-            },
-            {
-                name: "city-roads",
-                description: "High-performance visualization tool rendering every road within selected cities using WebGL",
-                link: "https://github.com/Daivik1520/city-roads",
-            },
-            {
-                name: "SAM-v4",
-                description: "Fourth iteration of the SAM desktop AI assistant",
-                tech: "Python",
-                license: "MIT",
-                link: "https://github.com/Daivik1520/SAM-v4",
-            },
-            {
-                name: "facial_recognition",
-                description: "AI-powered facial recognition system for automated classroom attendance tracking with ArcFace/AdaFace + YOLO models",
-                link: "https://github.com/Daivik1520/facial_recognition",
-            },
-        ],
-    },
-    {
-        title: "AI & Machine Learning",
-        projects: [
-            {
-                name: "llm-council",
-                description: "Local web app querying multiple LLMs to peer-review each other's answers and synthesize the best response",
-                link: "https://github.com/Daivik1520/llm-council",
-            },
-            {
-                name: "SAMgpt",
-                description: "Customized GPT implementation for educational and research purposes",
-                tech: "Jupyter Notebook",
-                license: "MIT",
-                link: "https://github.com/Daivik1520/SAMgpt",
-            },
-            {
-                name: "face-swapping",
-                description: "Python-based face swapping project",
-                tech: "Python",
-                link: "https://github.com/Daivik1520/face-swapping",
-            },
-            {
-                name: "face-recognition",
-                description: "Face recognition system with MIT License",
-                tech: "Python",
-                license: "MIT",
-                link: "https://github.com/Daivik1520/face-recognition",
-            },
-            {
-                name: "Heart-disease-recognition",
-                description: "Heart disease prediction system using 8 ML algorithms with 95% accuracy analyzing 13 medical attributes",
-                link: "https://github.com/Daivik1520/Heart-disease-recognition",
-            },
-        ],
-    },
-    {
-        title: "SAM Assistant Versions",
-        projects: [
-            {
-                name: "SAM-v3",
-                description: "Third version of SAM assistant",
-                tech: "Python",
-                license: "MIT",
-                link: "https://github.com/Daivik1520/SAM-v3",
-            },
-            {
-                name: "SAM-v2",
-                description: "Voice-controlled Windows assistant with system controls, UI, and AI chat",
-                tech: "Python",
-                link: "https://github.com/Daivik1520/SAM-v2",
-            },
-            {
-                name: "SAM.CHAT",
-                description: "Chat interface for SAM",
-                tech: "TypeScript",
-                license: "MIT",
-                link: "https://github.com/Daivik1520/SAM.CHAT",
-            },
-            {
-                name: "SAMchatbot",
-                description: "Simple Tkinter chatbot with offline Q&A and Wikipedia fallback",
-                tech: "Python",
-                link: "https://github.com/Daivik1520/SAMchatbot",
-            },
-            {
-                name: "SAM",
-                description: "Original SAM assistant project",
-                tech: "Python",
-                link: "https://github.com/Daivik1520/SAM",
-            },
-        ],
-    },
-    {
-        title: "Computer Vision & Interaction",
-        projects: [
-            {
-                name: "gesture-driver",
-                description: "AI-powered computer control using hand gestures via webcam",
-                tech: "Python",
-                link: "https://github.com/Daivik1520/gesture-driver",
-            },
-            {
-                name: "gesture-based-gaming",
-                description: "Gaming control through hand gestures",
-                tech: "Python",
-                license: "MIT",
-                link: "https://github.com/Daivik1520/gesture-based-gaming",
-            },
-            {
-                name: "virtual-mouse",
-                description: "Control computer cursor using hand gestures via webcam with OpenCV, MediaPipe, and PyAutoGUI",
-                tech: "Python",
-                link: "https://github.com/Daivik1520/virtual-mouse",
-            },
-        ],
-    },
-    {
-        title: "Web Projects",
-        projects: [
-            {
-                name: "profile",
-                description: "3D profile website",
-                tech: "JavaScript",
-                link: "https://github.com/Daivik1520/profile",
-            },
-            {
-                name: "youtube-finder",
-                description: "YouTube search application",
-                tech: "TypeScript",
-                link: "https://github.com/Daivik1520/youtube-finder",
-            },
-            {
-                name: "typing-speed",
-                description: "Typing speed test application",
-                tech: "JavaScript",
-                license: "MIT",
-                link: "https://github.com/Daivik1520/typing-speed-",
-            },
-            {
-                name: "Daivik1520",
-                description: "GitHub profile README",
-                tech: "HTML",
-                link: "https://github.com/Daivik1520/Daivik1520",
-            },
-        ],
-    },
+const featuredProjects: Project[] = [
+  {
+    name: "SAM-v4",
+    description:
+      "Fourth iteration of the SAM desktop AI assistant with voice control, system automation, and AI chat integration.",
+    tech: "Python",
+    license: "MIT",
+    link: "https://github.com/Daivik1520/SAM-v4",
+    icon: "🤖",
+  },
+  {
+    name: "facial_recognition",
+    description:
+      "AI-powered facial recognition system for automated classroom attendance tracking with ArcFace/AdaFace + YOLO models.",
+    tech: "Python",
+    link: "https://github.com/Daivik1520/facial_recognition",
+    icon: "👁️",
+  },
+  {
+    name: "llm-council",
+    description:
+      "Local web app querying multiple LLMs to peer-review each other's answers and synthesize the best response.",
+    tech: "TypeScript",
+    link: "https://github.com/Daivik1520/llm-council",
+    icon: "🧠",
+  },
+  {
+    name: "virtual-mouse",
+    description:
+      "Control the computer cursor using hand gestures via webcam with OpenCV, MediaPipe, and PyAutoGUI.",
+    tech: "Python",
+    link: "https://github.com/Daivik1520/virtual-mouse",
+    icon: "🖐️",
+  },
 ];
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.1,
-        },
-    },
-};
-
-const cardVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 0.5,
-            ease: [0.25, 0.1, 0.25, 1] as const,
-        },
-    },
-};
+const categories: Category[] = [
+  {
+    title: "AI & Machine Learning",
+    projects: [
+      {
+        name: "SAMgpt",
+        description: "Customized GPT implementation for educational and research purposes",
+        tech: "Jupyter Notebook",
+        license: "MIT",
+        link: "https://github.com/Daivik1520/SAMgpt",
+        icon: "📓",
+      },
+      {
+        name: "face-swapping",
+        description: "Python-based face swapping project using deep learning",
+        tech: "Python",
+        link: "https://github.com/Daivik1520/face-swapping",
+        icon: "🎭",
+      },
+      {
+        name: "Heart-disease-recognition",
+        description: "Heart disease prediction using 8 ML algorithms with 95% accuracy",
+        tech: "Python",
+        link: "https://github.com/Daivik1520/Heart-disease-recognition",
+        icon: "❤️",
+      },
+      {
+        name: "face-recognition",
+        description: "Face recognition system with MIT License",
+        tech: "Python",
+        license: "MIT",
+        link: "https://github.com/Daivik1520/face-recognition",
+        icon: "🧑‍💻",
+      },
+    ],
+  },
+  {
+    title: "SAM Assistant Versions",
+    projects: [
+      {
+        name: "SAM-v3",
+        description: "Third version of SAM assistant with improved features",
+        tech: "Python",
+        license: "MIT",
+        link: "https://github.com/Daivik1520/SAM-v3",
+        icon: "🤖",
+      },
+      {
+        name: "SAM-v2",
+        description: "Voice-controlled Windows assistant with system controls and AI chat",
+        tech: "Python",
+        link: "https://github.com/Daivik1520/SAM-v2",
+        icon: "🎙️",
+      },
+      {
+        name: "SAM.CHAT",
+        description: "Modern chat interface for SAM assistant",
+        tech: "TypeScript",
+        license: "MIT",
+        link: "https://github.com/Daivik1520/SAM.CHAT",
+        icon: "💬",
+      },
+      {
+        name: "SAMchatbot",
+        description: "Simple chatbot with offline Q&A and Wikipedia fallback",
+        tech: "Python",
+        link: "https://github.com/Daivik1520/SAMchatbot",
+        icon: "🗨️",
+      },
+    ],
+  },
+  {
+    title: "Computer Vision",
+    projects: [
+      {
+        name: "gesture-driver",
+        description: "AI-powered computer control using hand gestures via webcam",
+        tech: "Python",
+        link: "https://github.com/Daivik1520/gesture-driver",
+        icon: "✋",
+      },
+      {
+        name: "gesture-based-gaming",
+        description: "Gaming control through hand gestures",
+        tech: "Python",
+        license: "MIT",
+        link: "https://github.com/Daivik1520/gesture-based-gaming",
+        icon: "🎮",
+      },
+    ],
+  },
+  {
+    title: "Web Projects",
+    projects: [
+      {
+        name: "Search2Download",
+        description: "Turn Google searches into direct downloads programmatically",
+        tech: "JavaScript",
+        link: "https://github.com/Daivik1520/Search2Download",
+        icon: "⬇️",
+      },
+      {
+        name: "terminal_tunes",
+        description: "Terminal-based music player application",
+        tech: "JavaScript",
+        link: "https://github.com/Daivik1520/teminal_tunes",
+        icon: "🎵",
+      },
+      {
+        name: "city-roads",
+        description: "High-performance visualization rendering every road in cities using WebGL",
+        tech: "JavaScript",
+        link: "https://github.com/Daivik1520/city-roads",
+        icon: "🗺️",
+      },
+      {
+        name: "youtube-finder",
+        description: "YouTube search application",
+        tech: "TypeScript",
+        link: "https://github.com/Daivik1520/youtube-finder",
+        icon: "🔍",
+      },
+    ],
+  },
+];
 
 export default function ProjectsPage() {
-    return (
-        <main className="min-h-screen bg-[#0a0a0a] pt-8 pb-24 px-6 md:px-12 lg:px-24 relative overflow-hidden">
-            {/* Particle Background */}
-            <div className="fixed inset-0 z-0">
-                <ParticleBackground />
-            </div>
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
-            {/* Back to Home */}
-            <div className="relative z-10 max-w-7xl mx-auto mb-12">
-                <Link
-                    href="/"
-                    className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors group"
-                >
-                    <svg
-                        className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                        />
-                    </svg>
-                    Back to Home
-                </Link>
-            </div>
+  const toggle = (title: string) =>
+    setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
 
-            {/* Header */}
-            <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="relative z-10 max-w-7xl mx-auto mb-20"
-            >
-                <span className="text-sm font-medium tracking-widest text-white/40 uppercase mb-4 block">
-                    Portfolio
-                </span>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
-                    All{" "}
-                    <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                        Projects
-                    </span>
-                </h1>
-                <p className="text-lg text-white/50 max-w-2xl leading-relaxed">
-                    A comprehensive collection of my work spanning AI, machine learning,
-                    computer vision, and web development.
-                </p>
-            </motion.div>
+  return (
+    <PageTransition>
+      <NavMenu />
+      <main>
+        <div className="section me-section" style={{ paddingTop: "6rem" }}>
+          <Link href="/" className="h4 link" style={{ display: "inline-block", marginBottom: "2.5rem" }}>
+            ← Home
+          </Link>
 
-            {/* Categories */}
-            {categories.map((category, categoryIndex) => (
-                <motion.section
-                    key={category.title}
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ delay: categoryIndex * 0.1 }}
-                    className="relative z-10 max-w-7xl mx-auto mb-20"
-                >
-                    {/* Category Header */}
-                    <div className="flex items-center gap-4 mb-10">
-                        <h2 className="text-2xl md:text-3xl font-bold text-white">
-                            {category.title}
-                        </h2>
-                        <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent" />
-                    </div>
+          <TextSplitAnimation text="Projects" className="hero-name" tag="div" />
+          <p className="intro-text" style={{ maxWidth: "44rem", marginTop: "1.5rem" }}>
+            A running list of things I&apos;ve built — mostly AI, computer vision,
+            and web experiments.
+          </p>
+        </div>
 
-                    {/* Projects Grid */}
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-50px" }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                    >
-                        {category.projects.map((project) => (
-                            <motion.div
-                                key={project.name}
-                                variants={cardVariants}
-                            >
-                                <TiltCard className="h-full">
-                                    <a
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group block h-full"
-                                    >
-                                        {/* Card with glassmorphism effect */}
-                                        <div className="relative h-full p-8 rounded-3xl bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] overflow-hidden transition-all duration-500 hover:bg-white/[0.06] hover:border-white/[0.15] hover:shadow-[0_20px_80px_-20px_rgba(139,92,246,0.3)]">
-                                            {/* Gradient Glow */}
-                                            <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                                            {/* Tech Badge */}
-                                            {project.tech && (
-                                                <span className="inline-block px-3 py-1 text-xs font-medium tracking-wide text-white/40 bg-white/[0.05] rounded-full mb-6">
-                                                    {project.tech}
-                                                </span>
-                                            )}
-
-                                            {/* Title */}
-                                            <h3 className="text-xl md:text-2xl font-bold text-white mb-4 tracking-tight group-hover:text-white/90 transition-colors">
-                                                {project.name}
-                                            </h3>
-
-                                            {/* Description */}
-                                            <p className="text-white/50 leading-relaxed mb-6 group-hover:text-white/60 transition-colors line-clamp-3">
-                                                {project.description}
-                                            </p>
-
-                                            {/* License Badge */}
-                                            {project.license && (
-                                                <span className="inline-block px-3 py-1.5 text-xs font-medium text-emerald-400/80 bg-emerald-500/10 rounded-full border border-emerald-500/20">
-                                                    {project.license} License
-                                                </span>
-                                            )}
-
-                                            {/* Arrow Indicator */}
-                                            <div className="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                                                <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/10 backdrop-blur-sm">
-                                                    <svg
-                                                        className="w-5 h-5 text-white"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M14 5l7 7m0 0l-7 7m7-7H3"
-                                                        />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </TiltCard>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </motion.section>
+        <div className="section me-section" style={{ paddingTop: 0 }}>
+          <div className="section-title">
+            <TextSplitAnimation text="Featured" className="h2" tag="div" />
+          </div>
+          <div className="career-grid cols-2">
+            {featuredProjects.map((project) => (
+              <a
+                key={project.name}
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="career-card"
+              >
+                <div className="career-mark">{project.icon}</div>
+                <div>
+                  <div className="h4" style={{ marginBottom: "0.5rem" }}>
+                    {project.name}
+                  </div>
+                  <p className="b2" style={{ marginBottom: "0.75rem" }}>
+                    {project.description}
+                  </p>
+                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+                    {project.tech && <span className="c label amber show-type-tag">{project.tech}</span>}
+                    {project.license && (
+                      <span className="c label amber show-type-tag">{project.license}</span>
+                    )}
+                  </div>
+                </div>
+              </a>
             ))}
+          </div>
+        </div>
 
-            {/* GitHub CTA */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="relative z-10 max-w-7xl mx-auto text-center mt-24"
-            >
-                <p className="text-white/40 mb-8 text-lg">Explore more on GitHub</p>
-                <motion.a
-                    href="https://github.com/Daivik1520"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05, y: -4 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-3 px-10 py-5 bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-full text-white font-medium tracking-wide hover:bg-white/[0.06] hover:border-white/[0.15] hover:shadow-[0_20px_80px_-20px_rgba(139,92,246,0.3)] transition-all duration-500"
-                >
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                    View GitHub Profile
-                </motion.a>
-            </motion.div>
-        </main>
-    );
+        {categories.map((category) => {
+          const isExpanded = expanded[category.title];
+          const visible = isExpanded ? category.projects : category.projects.slice(0, 3);
+          const hasMore = category.projects.length > 3;
+
+          return (
+            <div key={category.title}>
+              <DividerLineSimple />
+              <div className="section me-section">
+                <div className="section-title">
+                  <TextSplitAnimation text={category.title} className="h2" tag="div" />
+                </div>
+
+                <div>
+                  {visible.map((project) => (
+                    <a
+                      key={project.name}
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="card"
+                    >
+                      <div className="card-icon">
+                        <span style={{ fontSize: "1.5rem" }}>{project.icon}</span>
+                      </div>
+                      <div className="card-text">
+                        <div className="card-title-group">
+                          <div className="h4">{project.name}</div>
+                          <div className="h4" style={{ fontWeight: 400, opacity: 0.6 }}>
+                            {project.description}
+                          </div>
+                        </div>
+                        <div className="c amber">{project.tech}</div>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+
+                {hasMore && (
+                  <button
+                    onClick={() => toggle(category.title)}
+                    className="button"
+                    style={{
+                      marginTop: "1.5rem",
+                      background: "rgba(0,0,0,0.08)",
+                      borderColor: "rgba(0,0,0,0.15)",
+                    }}
+                  >
+                    <span className="h4" style={{ color: "#000" }}>
+                      {isExpanded ? "Show less" : `View ${category.projects.length - 3} more`}
+                    </span>
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        <DividerLineSimple />
+        <div className="section me-section" style={{ textAlign: "center" }}>
+          <p className="b2" style={{ marginBottom: "1.5rem" }}>
+            Explore more on GitHub
+          </p>
+          <a
+            href="https://github.com/Daivik1520"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="button"
+            style={{ background: "#000", borderColor: "#000" }}
+          >
+            <span className="h4" style={{ color: "#FFD177" }}>View GitHub Profile</span>
+          </a>
+        </div>
+
+        <FooterMinimal />
+      </main>
+      <EmailFab />
+    </PageTransition>
+  );
+}
+
+function DividerLineSimple() {
+  return (
+    <div className="section">
+      <div className="divider">
+        <div className="divider-line" style={{ width: "100%" }} />
+      </div>
+    </div>
+  );
 }

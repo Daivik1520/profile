@@ -1,17 +1,75 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Preloader from "@/components/Preloader";
-import CustomCursor from "@/components/CustomCursor";
+import TransitionProvider from "@/components/TransitionProvider";
+import JsonLd from "@/components/JsonLd";
+
+const siteUrl = "https://daivikreddy.com";
 
 export const metadata: Metadata = {
-  title: "Daivik Reddy | AI Enthusiast & Creative Developer",
-  description: "Explore innovative AI projects including SAM desktop assistant, face recognition attendance, and virtual mouse. Created by Daivik Reddy.",
-  keywords: ["Daivik Reddy", "AI", "machine learning", "computer vision", "SAM", "portfolio", "developer"],
-  authors: [{ name: "Daivik Reddy" }],
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Daivik Reddy — Developer & AI Enthusiast",
+    template: "%s | Daivik Reddy",
+  },
+  description:
+    "Daivik Reddy — creative developer and AI enthusiast from Hyderabad, India. Building projects in AI, computer vision, and web development.",
+  keywords: [
+    "Daivik Reddy",
+    "portfolio",
+    "developer",
+    "AI",
+    "machine learning",
+    "computer vision",
+    "web developer",
+    "Hyderabad",
+    "India",
+    "Next.js",
+    "React",
+    "Python",
+  ],
+  authors: [{ name: "Daivik Reddy", url: siteUrl }],
+  creator: "Daivik Reddy",
+  publisher: "Daivik Reddy",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "Daivik Reddy | AI Enthusiast & Creative Developer",
-    description: "Explore innovative AI projects including SAM desktop assistant, face recognition attendance, and virtual mouse.",
+    title: "Daivik Reddy — Developer & AI Enthusiast",
+    description:
+      "Creative developer and AI enthusiast from Hyderabad, India. Explore my projects, favorite shows, music, and more.",
+    url: siteUrl,
+    siteName: "Daivik Reddy",
+    locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/dav-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Daivik Reddy — Developer & AI Enthusiast",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Daivik Reddy — Developer & AI Enthusiast",
+    description:
+      "Creative developer and AI enthusiast from Hyderabad, India. Building projects in AI, computer vision, and web development.",
+    images: ["/dav-hero.jpg"],
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 
@@ -22,15 +80,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className="antialiased"
-        style={{
-          fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        }}
-      >
-        <Preloader />
-        <CustomCursor />
-        {children}
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+        <JsonLd />
+      </head>
+      <body>
+        <TransitionProvider>{children}</TransitionProvider>
       </body>
     </html>
   );

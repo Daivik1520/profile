@@ -1,26 +1,40 @@
-import ScrollyCanvas from "@/components/ScrollyCanvas";
-import Overlay from "@/components/Overlay";
-import ProjectCaseStudies from "@/components/ProjectCaseStudies";
-import HolographicFooter from "@/components/HolographicFooter";
-import VirtualMouse from "@/components/VirtualMouse";
+"use client";
+
+import NavMenu from "@/components/NavMenu";
+import EmailFab from "@/components/EmailFab";
+import Hero from "@/components/Hero";
+import BioSection from "@/components/BioSection";
+import ShowsSection from "@/components/ShowsSection";
+import MusicSection from "@/components/MusicSection";
+import QASection from "@/components/QASection";
+import GamesSection from "@/components/GamesSection";
+import DividerLine from "@/components/DividerLine";
+import FooterMinimal from "@/components/FooterMinimal";
+import PageTransition from "@/components/PageTransition";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0a0a0a]">
-      {/* Virtual Mouse Control */}
-      <VirtualMouse />
+    <PageTransition>
+      <NavMenu />
+      <main>
+        <Hero />
+        <BioSection />
 
-      {/* Hero Section with Scroll Animation */}
-      <section className="relative">
-        <ScrollyCanvas />
-        <Overlay />
-      </section>
+        <DividerLine />
+        <ShowsSection />
 
-      {/* Project Case Studies */}
-      <ProjectCaseStudies />
+        <DividerLine />
+        <MusicSection />
 
-      {/* Holographic Footer */}
-      <HolographicFooter />
-    </main>
+        <DividerLine />
+        <GamesSection />
+
+        <DividerLine />
+        <QASection />
+
+        <FooterMinimal />
+      </main>
+      <EmailFab />
+    </PageTransition>
   );
 }

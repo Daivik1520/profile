@@ -3,7 +3,7 @@ import "./globals.css";
 import TransitionProvider from "@/components/TransitionProvider";
 import JsonLd from "@/components/JsonLd";
 
-const siteUrl = "https://daivikreddy.com";
+const siteUrl = "https://daivikreddy.online";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

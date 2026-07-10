@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "List | Daivik Reddy",
     description:
       "Daivik Reddy's curated list of favorite films, TV series, and recommendations.",
-    url: "https://daivikreddy.com/list",
+    url: "https://daivikreddy.online/list",
   },
   alternates: {
-    canonical: "https://daivikreddy.com/list",
+    canonical: "https://daivikreddy.online/list",
   },
 };
 

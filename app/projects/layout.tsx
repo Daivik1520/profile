@@ -8,10 +8,10 @@ export const metadata: Metadata = {
     title: "Projects | Daivik Reddy",
     description:
       "Explore Daivik Reddy's projects — AI assistants, facial recognition, gesture control, LLM tools, and web experiments.",
-    url: "https://daivikreddy.com/projects",
+    url: "https://daivikreddy.online/projects",
   },
   alternates: {
-    canonical: "https://daivikreddy.com/projects",
+    canonical: "https://daivikreddy.online/projects",
   },
 };
 

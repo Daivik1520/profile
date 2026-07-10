@@ -3,8 +3,8 @@ export default function JsonLd() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Daivik Reddy",
-    url: "https://daivikreddy.com",
-    image: "https://daivikreddy.com/dav-hero.jpg",
+    url: "https://daivikreddy.online",
+    image: "https://daivikreddy.online/dav-hero.jpg",
     jobTitle: "Creative Developer & AI Enthusiast",
     description:
       "Creative developer and AI enthusiast from Hyderabad, India. Building projects in AI, computer vision, and web development.",

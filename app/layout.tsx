@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/dav-new-pic.jpg",
+        url: "/dav-hero.jpg",
         width: 1200,
         height: 630,
         alt: "Daivik Reddy — Developer & AI Enthusiast",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
       "Creative developer and AI enthusiast from Hyderabad, India. Building projects in AI, computer vision, and web development.",
     images: [
       {
-        url: "/dav-new-pic.jpg",
+        url: "/dav-hero.jpg",
         width: 1200,
         height: 630,
         alt: "Daivik Reddy — Developer & AI Enthusiast",

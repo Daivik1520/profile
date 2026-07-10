@@ -112,7 +112,7 @@ export default function Hero() {
       >
         <img
           ref={imageRef}
-          src="/dav-new-pic.jpg"
+          src="/dav-hero.jpg"
           alt="Daivik Reddy — creative developer and AI enthusiast from Hyderabad, India"
           width={600}
           height={800}

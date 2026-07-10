@@ -9,7 +9,7 @@ export default function JsonLd() {
     url: siteUrl,
     image: {
       "@type": "ImageObject",
-      url: `${siteUrl}/dav-new-pic.jpg`,
+      url: `${siteUrl}/dav-hero.jpg`,
       width: 1200,
       height: 630,
     },

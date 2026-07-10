@@ -4,11 +4,21 @@ export const metadata: Metadata = {
   title: "List",
   description:
     "Daivik Reddy's curated list of favorite films, TV series, and recommendations — from Interstellar and Oppenheimer to Mr. Robot and Demon Slayer.",
+  keywords: [
+    "Daivik Reddy recommendations",
+    "favorite films",
+    "TV series list",
+    "movie recommendations",
+    "Interstellar",
+    "Mr. Robot",
+    "anime",
+  ],
   openGraph: {
     title: "List | Daivik Reddy",
     description:
       "Daivik Reddy's curated list of favorite films, TV series, and recommendations.",
     url: "https://daivikreddy.online/list",
+    type: "website",
   },
   alternates: {
     canonical: "https://daivikreddy.online/list",

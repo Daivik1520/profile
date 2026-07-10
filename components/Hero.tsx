@@ -25,8 +25,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <div
+    <header
       className="hero-grid"
+      role="banner"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
@@ -50,7 +51,8 @@ export default function Hero() {
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", flex: 1 }}>
-          <div>
+          <h1 className="sr-only">Daivik Reddy — Developer & AI Enthusiast</h1>
+          <div aria-hidden="true">
             <TextSplitAnimation text="DAIVIK" className="hero-name" tag="div" delay={400} />
           </div>
 
@@ -62,9 +64,11 @@ export default function Hero() {
               gap: "1.25rem",
             }}
           >
-            <TextSplitAnimation text="REDDY" className="hero-name" tag="div" delay={600} />
+            <div aria-hidden="true">
+              <TextSplitAnimation text="REDDY" className="hero-name" tag="div" delay={600} />
+            </div>
 
-            <div
+            <p
               className="b2"
               style={{
                 maxWidth: "16rem",
@@ -75,7 +79,7 @@ export default function Hero() {
             >
               Exploring AI, tech, and everyday life with equal curiosity — always
               learning, always building something new.
-            </div>
+            </p>
           </div>
         </div>
 
@@ -88,9 +92,9 @@ export default function Hero() {
             gap: "1rem",
           }}
         >
-          <div className="h4" style={{ fontWeight: 600 }}>
+          <address className="h4" style={{ fontWeight: 600, fontStyle: "normal" }}>
             HYDERABAD, INDIA
-          </div>
+          </address>
           <LiveClock />
         </div>
       </div>
@@ -108,8 +112,11 @@ export default function Hero() {
       >
         <img
           ref={imageRef}
-          src="/dav-hero.jpg"
-          alt="Daivik Reddy portrait"
+          src="/dav-new-pic.jpg"
+          alt="Daivik Reddy — creative developer and AI enthusiast from Hyderabad, India"
+          width={600}
+          height={800}
+          loading="eager"
           style={{
             width: "100%",
             height: "100%",
@@ -119,6 +126,6 @@ export default function Hero() {
           }}
         />
       </div>
-    </div>
+    </header>
   );
 }

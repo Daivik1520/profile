@@ -1,9 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import TransitionProvider from "@/components/TransitionProvider";
 import JsonLd from "@/components/JsonLd";
 
 const siteUrl = "https://daivikreddy.online";
+
+export const viewport: Viewport = {
+  themeColor: "#FFD177",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -18,18 +25,24 @@ export const metadata: Metadata = {
     "portfolio",
     "developer",
     "AI",
+    "artificial intelligence",
     "machine learning",
     "computer vision",
     "web developer",
+    "full stack developer",
+    "frontend developer",
     "Hyderabad",
     "India",
     "Next.js",
     "React",
     "Python",
+    "TypeScript",
+    "personal website",
   ],
   authors: [{ name: "Daivik Reddy", url: siteUrl }],
   creator: "Daivik Reddy",
   publisher: "Daivik Reddy",
+  category: "technology",
   robots: {
     index: true,
     follow: true,
@@ -51,10 +64,11 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/dav-hero.jpg",
+        url: "/dav-new-pic.jpg",
         width: 1200,
         height: 630,
         alt: "Daivik Reddy — Developer & AI Enthusiast",
+        type: "image/png",
       },
     ],
   },
@@ -63,13 +77,24 @@ export const metadata: Metadata = {
     title: "Daivik Reddy — Developer & AI Enthusiast",
     description:
       "Creative developer and AI enthusiast from Hyderabad, India. Building projects in AI, computer vision, and web development.",
-    images: ["/dav-hero.jpg"],
+    images: [
+      {
+        url: "/dav-new-pic.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Daivik Reddy — Developer & AI Enthusiast",
+      },
+    ],
   },
   alternates: {
     canonical: siteUrl,
   },
   icons: {
     icon: "/favicon.ico",
+  },
+  manifest: "/manifest.json",
+  verification: {
+    google: "YOUR_GOOGLE_VERIFICATION_CODE",
   },
 };
 
@@ -82,8 +107,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap"
+          rel="stylesheet"
+        />
         <JsonLd />
       </head>
       <body>

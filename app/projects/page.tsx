@@ -1,331 +1,437 @@
-"use client";
-
-import { useState } from "react";
-import Link from "next/link";
 import NavMenu from "@/components/NavMenu";
 import EmailFab from "@/components/EmailFab";
-import FooterMinimal from "@/components/FooterMinimal";
-import TextSplitAnimation from "@/components/TextSplitAnimation";
 import PageTransition from "@/components/PageTransition";
 
 interface Project {
   name: string;
   description: string;
-  tech?: string;
-  license?: string;
+  tech: string;
+  year: string;
   link: string;
-  icon: string;
+  live?: string;
 }
 
-interface Category {
+interface ProjectCategory {
+  id: string;
   title: string;
   projects: Project[];
 }
 
-const featuredProjects: Project[] = [
+// Sourced from github.com/Daivik1520 — keep in sync when new repos ship.
+const categories: ProjectCategory[] = [
   {
-    name: "SAM-v4",
-    description:
-      "Fourth iteration of the SAM desktop AI assistant with voice control, system automation, and AI chat integration.",
-    tech: "Python",
-    license: "MIT",
-    link: "https://github.com/Daivik1520/SAM-v4",
-    icon: "🤖",
-  },
-  {
-    name: "facial_recognition",
-    description:
-      "AI-powered facial recognition system for automated classroom attendance tracking with ArcFace/AdaFace + YOLO models.",
-    tech: "Python",
-    link: "https://github.com/Daivik1520/facial_recognition",
-    icon: "👁️",
-  },
-  {
-    name: "llm-council",
-    description:
-      "Local web app querying multiple LLMs to peer-review each other's answers and synthesize the best response.",
-    tech: "TypeScript",
-    link: "https://github.com/Daivik1520/llm-council",
-    icon: "🧠",
-  },
-  {
-    name: "virtual-mouse",
-    description:
-      "Control the computer cursor using hand gestures via webcam with OpenCV, MediaPipe, and PyAutoGUI.",
-    tech: "Python",
-    link: "https://github.com/Daivik1520/virtual-mouse",
-    icon: "🖐️",
-  },
-];
-
-const categories: Category[] = [
-  {
-    title: "AI & Machine Learning",
+    id: "ai-assistants",
+    title: "AI Assistants",
     projects: [
       {
-        name: "SAMgpt",
-        description: "Customized GPT implementation for educational and research purposes",
-        tech: "Jupyter Notebook",
-        license: "MIT",
-        link: "https://github.com/Daivik1520/SAMgpt",
-        icon: "📓",
+        name: "MARK",
+        description:
+          "The latest evolution of my assistant series — headless, web-based, faster and smarter than SAM and DAV.",
+        tech: "Python",
+        year: "2026",
+        link: "https://github.com/Daivik1520/MARK",
       },
       {
-        name: "face-swapping",
-        description: "Python-based face swapping project using deep learning",
+        name: "DAV-v1",
+        description:
+          "JARVIS-style local AI with deep system control, advanced automation, and high-level voice execution.",
         tech: "Python",
-        link: "https://github.com/Daivik1520/face-swapping",
-        icon: "🎭",
+        year: "2026",
+        link: "https://github.com/Daivik1520/DAV-v1",
       },
       {
-        name: "Heart-disease-recognition",
-        description: "Heart disease prediction using 8 ML algorithms with 95% accuracy",
+        name: "LocalBot",
+        description:
+          "Privacy-first AI chatbot running entirely on local hardware with ultra-natural voice synthesis, delivered through Telegram.",
         tech: "Python",
-        link: "https://github.com/Daivik1520/Heart-disease-recognition",
-        icon: "❤️",
+        year: "2026",
+        link: "https://github.com/Daivik1520/LocalBot",
       },
       {
-        name: "face-recognition",
-        description: "Face recognition system with MIT License",
+        name: "SAM-v4",
+        description:
+          "Fourth-generation SAM desktop assistant with voice control, system automation, and AI chat.",
         tech: "Python",
-        license: "MIT",
-        link: "https://github.com/Daivik1520/face-recognition",
-        icon: "🧑‍💻",
+        year: "2026",
+        link: "https://github.com/Daivik1520/SAM-v4",
       },
-    ],
-  },
-  {
-    title: "SAM Assistant Versions",
-    projects: [
+      {
+        name: "chatting-local",
+        description: "Local-first AI chat app experiment.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/chatting-local",
+      },
       {
         name: "SAM-v3",
-        description: "Third version of SAM assistant with improved features",
+        description: "Third iteration of SAM with improved features and stability.",
         tech: "Python",
-        license: "MIT",
+        year: "2025",
         link: "https://github.com/Daivik1520/SAM-v3",
-        icon: "🤖",
       },
       {
         name: "SAM-v2",
-        description: "Voice-controlled Windows assistant with system controls and AI chat",
+        description:
+          "Voice-controlled Windows assistant with system controls, UI, and AI chat.",
         tech: "Python",
+        year: "2025",
         link: "https://github.com/Daivik1520/SAM-v2",
-        icon: "🎙️",
       },
       {
         name: "SAM.CHAT",
-        description: "Modern chat interface for SAM assistant",
+        description: "Modern chat interface for the SAM assistant.",
         tech: "TypeScript",
-        license: "MIT",
+        year: "2025",
         link: "https://github.com/Daivik1520/SAM.CHAT",
-        icon: "💬",
       },
       {
         name: "SAMchatbot",
-        description: "Simple chatbot with offline Q&A and Wikipedia fallback",
+        description:
+          "Tkinter chatbot with a clean UI, offline factual Q&A, and Wikipedia fallback.",
         tech: "Python",
+        year: "2025",
         link: "https://github.com/Daivik1520/SAMchatbot",
-        icon: "🗨️",
+      },
+      {
+        name: "SAM",
+        description: "The original SAM — where the assistant series began.",
+        tech: "Python",
+        year: "2025",
+        link: "https://github.com/Daivik1520/SAM",
       },
     ],
   },
   {
+    id: "ai-ml",
+    title: "AI & Machine Learning",
+    projects: [
+      {
+        name: "llm-council",
+        description:
+          "A council of multiple LLMs that peer-review each other's answers and synthesize the best possible response.",
+        tech: "JavaScript",
+        year: "2025",
+        link: "https://github.com/Daivik1520/llm-council",
+      },
+      {
+        name: "SAMgpt",
+        description:
+          "Customized, modular GPT implementation for educational and research purposes.",
+        tech: "Jupyter",
+        year: "2025",
+        link: "https://github.com/Daivik1520/SAMgpt",
+      },
+      {
+        name: "Heart-disease-recognition",
+        description:
+          "Heart disease prediction comparing 8 ML algorithms with 95% accuracy across 13 medical attributes.",
+        tech: "Jupyter",
+        year: "2025",
+        link: "https://github.com/Daivik1520/Heart-disease-recognition",
+      },
+      {
+        name: "stock_predictor",
+        description: "ML-powered stock prediction with a live web dashboard.",
+        tech: "JavaScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/stock_predictor",
+        live: "https://stock-predictor-eight-alpha.vercel.app",
+      },
+      {
+        name: "smartshop-AI",
+        description:
+          "AI shopping assistant that helps people find the cheapest and best items.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/smartshop-AI",
+      },
+    ],
+  },
+  {
+    id: "computer-vision",
     title: "Computer Vision",
     projects: [
       {
-        name: "gesture-driver",
-        description: "AI-powered computer control using hand gestures via webcam",
+        name: "facial_recognition",
+        description:
+          "Automated classroom attendance with real-time ArcFace/AdaFace + YOLO recognition and absentee flagging.",
         tech: "Python",
+        year: "2026",
+        link: "https://github.com/Daivik1520/facial_recognition",
+      },
+      {
+        name: "virtual-mouse",
+        description:
+          "Control your cursor with hand gestures via webcam — OpenCV, MediaPipe, and PyAutoGUI.",
+        tech: "Python",
+        year: "2025",
+        link: "https://github.com/Daivik1520/virtual-mouse",
+      },
+      {
+        name: "gesture-driver",
+        description:
+          "AI-powered computer control that translates hand movements into navigation, gaming, and system commands.",
+        tech: "Python",
+        year: "2025",
         link: "https://github.com/Daivik1520/gesture-driver",
-        icon: "✋",
       },
       {
         name: "gesture-based-gaming",
-        description: "Gaming control through hand gestures",
+        description: "Play games with hand gestures instead of a keyboard.",
         tech: "Python",
-        license: "MIT",
+        year: "2025",
         link: "https://github.com/Daivik1520/gesture-based-gaming",
-        icon: "🎮",
+      },
+      {
+        name: "face-swapping",
+        description: "Deep-learning face swapping in Python.",
+        tech: "Python",
+        year: "2025",
+        link: "https://github.com/Daivik1520/face-swapping",
+      },
+      {
+        name: "face-recognition",
+        description: "Face recognition system built in Python.",
+        tech: "Python",
+        year: "2025",
+        link: "https://github.com/Daivik1520/face-recognition",
       },
     ],
   },
   {
-    title: "Web Projects",
+    id: "apps-tools",
+    title: "Apps & Tools",
     projects: [
       {
-        name: "Search2Download",
-        description: "Turn Google searches into direct downloads programmatically",
+        name: "DECK",
+        description:
+          "Turn any old device into a stream deck — a software replacement for the physical Stream Deck.",
+        tech: "Python",
+        year: "2026",
+        link: "https://github.com/Daivik1520/DECK",
+      },
+      {
+        name: "MirrorBar",
+        description:
+          "macOS menu-bar mirror to check your lighting and appearance before hopping into a video call.",
+        tech: "Swift",
+        year: "2026",
+        link: "https://github.com/Daivik1520/MirrorBar",
+      },
+      {
+        name: "Fitcore",
+        description:
+          "My first mobile app — a fitness tracker with step counting and built-in exercises.",
         tech: "JavaScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/Fitcore",
+      },
+      {
+        name: "idea-spark",
+        description: "App for capturing and organizing ideas the moment they strike.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/idea-spark",
+      },
+      {
+        name: "runzone",
+        description: "Running companion app experiment.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/runzone",
+      },
+      {
+        name: "Search2Download",
+        description:
+          "Turns Google searches into direct downloads by programmatically executing queries and retrieving content.",
+        tech: "HTML",
+        year: "2026",
         link: "https://github.com/Daivik1520/Search2Download",
-        icon: "⬇️",
       },
       {
         name: "terminal_tunes",
-        description: "Terminal-based music player application",
+        description: "Terminal-based music player.",
         tech: "JavaScript",
+        year: "2026",
         link: "https://github.com/Daivik1520/teminal_tunes",
-        icon: "🎵",
+      },
+    ],
+  },
+  {
+    id: "web",
+    title: "Web",
+    projects: [
+      {
+        name: "MARK-MONITOR",
+        description:
+          "Real-time global intelligence dashboard — AI news aggregation, geopolitical monitoring, and infrastructure tracking.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/MARK-MONITOR",
+        live: "https://mark-monitor.vercel.app",
       },
       {
         name: "city-roads",
-        description: "High-performance visualization rendering every road in cities using WebGL",
+        description:
+          "High-performance WebGL visualization that renders every single road in a city.",
         tech: "JavaScript",
+        year: "2026",
         link: "https://github.com/Daivik1520/city-roads",
-        icon: "🗺️",
+      },
+      {
+        name: "dailyplanner-web",
+        description:
+          "Website for DailyPlanner — an app that keeps people focused on goals and away from social media.",
+        tech: "CSS",
+        year: "2026",
+        link: "https://github.com/Daivik1520/dailyplanner-web",
+      },
+      {
+        name: "MirrorBar_Web",
+        description: "Marketing site for the MirrorBar app.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/MirrorBar_Web",
+      },
+      {
+        name: "fitcore-scroll-showcase",
+        description: "Scroll-driven showcase site for Fitcore.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/fitcore-scroll-showcase",
+      },
+      {
+        name: "face_recog_website",
+        description: "Website for the facial recognition project.",
+        tech: "CSS",
+        year: "2026",
+        link: "https://github.com/Daivik1520/face_recog_website",
       },
       {
         name: "youtube-finder",
-        description: "YouTube search application",
+        description: "YouTube search application.",
         tech: "TypeScript",
+        year: "2025",
         link: "https://github.com/Daivik1520/youtube-finder",
-        icon: "🔍",
+      },
+      {
+        name: "typing-speed",
+        description: "Typing speed test game.",
+        tech: "JavaScript",
+        year: "2025",
+        link: "https://github.com/Daivik1520/typing-speed-",
+      },
+      {
+        name: "profile",
+        description: "This website — my portfolio, built with Next.js.",
+        tech: "TypeScript",
+        year: "2026",
+        link: "https://github.com/Daivik1520/profile",
+        live: "https://daivikreddy.online",
       },
     ],
   },
 ];
 
+const totalProjects = categories.reduce(
+  (sum, cat) => sum + cat.projects.length,
+  0
+);
+
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": "https://daivikreddy.online/projects#collection",
+  name: "Projects by Daivik Reddy",
+  description:
+    "Open-source projects by Daivik Reddy — AI assistants, machine learning, computer vision, apps, and web experiments.",
+  url: "https://daivikreddy.online/projects",
+  isPartOf: { "@id": "https://daivikreddy.online/#website" },
+  author: { "@id": "https://daivikreddy.online/#person" },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: totalProjects,
+    itemListElement: categories.flatMap((cat) =>
+      cat.projects.map((project) => ({
+        "@type": "SoftwareSourceCode",
+        name: project.name,
+        description: project.description,
+        programmingLanguage: project.tech,
+        codeRepository: project.link,
+        author: { "@id": "https://daivikreddy.online/#person" },
+      }))
+    ),
+  },
+};
+
 export default function ProjectsPage() {
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
-
-  const toggle = (title: string) =>
-    setExpanded((prev) => ({ ...prev, [title]: !prev[title] }));
-
   return (
     <PageTransition>
-      <NavMenu />
-      <main>
-        <div className="section me-section" style={{ paddingTop: "6rem" }}>
-          <Link href="/" className="h4 link" style={{ display: "inline-block", marginBottom: "2.5rem" }}>
-            ← Home
-          </Link>
+      <div className="list-page">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        />
+        <NavMenu />
+        <main>
+          <div className="list-grid">
+            <aside className="list-side">
+              <div>
+                <h1 className="list-title list-title-long">Projects</h1>
+                <p className="list-intro">
+                  Everything I&apos;ve built so far — {totalProjects} projects
+                  across AI assistants, machine learning, computer vision,
+                  apps, and the web. All open source, all on GitHub.
+                </p>
+              </div>
+              <nav className="list-cats">
+                {categories.map((cat) => (
+                  <a key={cat.id} href={`#${cat.id}`} className="list-cat-link">
+                    {cat.title}
+                  </a>
+                ))}
+                <a
+                  href="https://github.com/Daivik1520"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="list-cat-link"
+                >
+                  GitHub ↗
+                </a>
+              </nav>
+            </aside>
 
-          <TextSplitAnimation text="Projects" className="hero-name" tag="div" />
-          <p className="intro-text" style={{ maxWidth: "44rem", marginTop: "1.5rem" }}>
-            A running list of things I&apos;ve built — mostly AI, computer vision,
-            and web experiments.
-          </p>
-        </div>
-
-        <div className="section me-section" style={{ paddingTop: 0 }}>
-          <div className="section-title">
-            <TextSplitAnimation text="Featured" className="h2" tag="div" />
-          </div>
-          <div className="career-grid cols-2">
-            {featuredProjects.map((project) => (
-              <a
-                key={project.name}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="career-card"
-              >
-                <div className="career-mark">{project.icon}</div>
-                <div>
-                  <div className="h4" style={{ marginBottom: "0.5rem" }}>
-                    {project.name}
-                  </div>
-                  <p className="b2" style={{ marginBottom: "0.75rem" }}>
-                    {project.description}
-                  </p>
-                  <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                    {project.tech && <span className="c label amber show-type-tag">{project.tech}</span>}
-                    {project.license && (
-                      <span className="c label amber show-type-tag">{project.license}</span>
-                    )}
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {categories.map((category) => {
-          const isExpanded = expanded[category.title];
-          const visible = isExpanded ? category.projects : category.projects.slice(0, 3);
-          const hasMore = category.projects.length > 3;
-
-          return (
-            <div key={category.title}>
-              <DividerLineSimple />
-              <div className="section me-section">
-                <div className="section-title">
-                  <TextSplitAnimation text={category.title} className="h2" tag="div" />
-                </div>
-
-                <div>
-                  {visible.map((project) => (
+            <div>
+              {categories.map((cat) => (
+                <section key={cat.id} id={cat.id} className="list-section">
+                  <div className="list-section-rule" />
+                  <h2 className="list-section-title">{cat.title}</h2>
+                  {cat.projects.map((project) => (
                     <a
                       key={project.name}
-                      href={project.link}
+                      href={project.live ?? project.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="card"
+                      className="list-row project-row"
                     >
-                      <div className="card-icon">
-                        <span style={{ fontSize: "1.5rem" }}>{project.icon}</span>
-                      </div>
-                      <div className="card-text">
-                        <div className="card-title-group">
-                          <div className="h4">{project.name}</div>
-                          <div className="h4" style={{ fontWeight: 400, opacity: 0.6 }}>
-                            {project.description}
-                          </div>
-                        </div>
-                        <div className="c amber">{project.tech}</div>
-                      </div>
+                      <span className="list-row-title">
+                        {project.name}
+                        <span className="list-row-desc">{project.description}</span>
+                      </span>
+                      <span className="list-row-meta">{project.tech}</span>
+                      <span className="list-row-meta year">{project.year}</span>
+                      <span className="list-row-link">
+                        {project.live ? "Live" : "GitHub"} ↗
+                      </span>
                     </a>
                   ))}
-                </div>
-
-                {hasMore && (
-                  <button
-                    onClick={() => toggle(category.title)}
-                    className="button"
-                    style={{
-                      marginTop: "1.5rem",
-                      background: "rgba(0,0,0,0.08)",
-                      borderColor: "rgba(0,0,0,0.15)",
-                    }}
-                  >
-                    <span className="h4" style={{ color: "#000" }}>
-                      {isExpanded ? "Show less" : `View ${category.projects.length - 3} more`}
-                    </span>
-                  </button>
-                )}
-              </div>
+                </section>
+              ))}
             </div>
-          );
-        })}
-
-        <DividerLineSimple />
-        <div className="section me-section" style={{ textAlign: "center" }}>
-          <p className="b2" style={{ marginBottom: "1.5rem" }}>
-            Explore more on GitHub
-          </p>
-          <a
-            href="https://github.com/Daivik1520"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="button"
-            style={{ background: "#000", borderColor: "#000" }}
-          >
-            <span className="h4" style={{ color: "#FFD177" }}>View GitHub Profile</span>
-          </a>
-        </div>
-
-        <FooterMinimal />
-      </main>
-      <EmailFab />
-    </PageTransition>
-  );
-}
-
-function DividerLineSimple() {
-  return (
-    <div className="section">
-      <div className="divider">
-        <div className="divider-line" style={{ width: "100%" }} />
+          </div>
+        </main>
+        <EmailFab />
       </div>
-    </div>
+    </PageTransition>
   );
 }

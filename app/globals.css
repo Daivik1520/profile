@@ -963,6 +963,31 @@ a {
   color: #ffd177;
 }
 
+/* Projects page (shares list styling, adds a description line) */
+.list-title-long {
+  font-size: clamp(3.25rem, 13vw, 11rem);
+  overflow-wrap: anywhere;
+}
+
+.project-row {
+  align-items: start;
+}
+
+.project-row .list-row-meta,
+.project-row .list-row-link {
+  padding-top: 0.25rem;
+}
+
+.list-row-desc {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(255, 209, 119, 0.55);
+  margin-top: 0.4rem;
+  max-width: 34rem;
+}
+
 @media (max-width: 900px) {
   .list-grid {
     grid-template-columns: 1fr;

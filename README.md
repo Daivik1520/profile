@@ -41,6 +41,7 @@
 - **🎮 Games & Shows** — Curated grids showcasing favorite media with poster art and reviews.
 - **❓ Q&A Section** — Personal FAQ with giant sticky wordmark.
 - **🚫 Custom 404 Page** — Animated dark-themed error page with navigation back to the site.
+- **🔍 Advanced SEO & Semantic HTML** — Triple JSON-LD schema (Person/WebSite/Breadcrumb), custom OG dynamic routing, full PWA manifest, and secure HTTP headers.
 
 ---
 

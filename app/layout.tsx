@@ -84,9 +84,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
   manifest: "/manifest.json",
   verification: {
     google: "YOUR_GOOGLE_VERIFICATION_CODE",

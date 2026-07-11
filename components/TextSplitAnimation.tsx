@@ -5,8 +5,9 @@ import { useEffect, useRef } from "react";
 interface TextSplitAnimationProps {
   text: string;
   className?: string;
-  tag?: "h1" | "h2" | "h3" | "div" | "span";
+  tag?: "h1" | "h2" | "h3" | "div" | "span" | "p";
   delay?: number;
+  splitBy?: "letter" | "word";
 }
 
 export default function TextSplitAnimation({
@@ -14,6 +15,7 @@ export default function TextSplitAnimation({
   className = "",
   tag: Tag = "div",
   delay = 0,
+  splitBy = "letter",
 }: TextSplitAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const hasAnimated = useRef(false);
@@ -27,13 +29,14 @@ export default function TextSplitAnimation({
         entries.forEach((entry) => {
           if (entry.isIntersecting && !hasAnimated.current) {
             hasAnimated.current = true;
-            const words = container.querySelectorAll(".word-inner");
-            words.forEach((word, index) => {
-              const el = word as HTMLElement;
+            const elements = container.querySelectorAll(".word-inner");
+            elements.forEach((el, index) => {
+              const htmlEl = el as HTMLElement;
+              const stagger = splitBy === "letter" ? 40 : 80;
               setTimeout(() => {
-                el.style.transition = `transform 0.8s cubic-bezier(0.35, 0.35, 0, 1)`;
-                el.style.transform = "translateY(0)";
-              }, delay + index * 80);
+                htmlEl.style.transition = `transform 0.8s cubic-bezier(0.35, 0.35, 0, 1)`;
+                htmlEl.style.transform = "translateY(0)";
+              }, delay + index * stagger);
             });
           }
         });
@@ -45,14 +48,14 @@ export default function TextSplitAnimation({
     return () => observer.disconnect();
   }, [delay]);
 
-  const words = text.split(" ");
+  const parts = splitBy === "letter" ? text.split("") : text.split(" ");
 
   return (
     <Tag ref={containerRef as any} className={className}>
-      {words.map((word, i) => (
+      {parts.map((part, i) => (
         <span key={i} className="word">
-          <span className="word-inner">{word}</span>
-          {i < words.length - 1 && "\u00A0"}
+          <span className="word-inner">{splitBy === "letter" && part === " " ? "\u00A0" : part}</span>
+          {splitBy === "word" && i < parts.length - 1 && "\u00A0"}
         </span>
       ))}
     </Tag>

@@ -422,7 +422,7 @@ a {
 
 .hero-name {
   font-family: 'Manuka', sans-serif;
-  font-size: clamp(4rem, 10.5vw, 9.5rem);
+  font-size: clamp(6rem, 18.5vw, 15rem);
   font-weight: 900;
   line-height: 0.85;
   letter-spacing: -0.01em;
@@ -461,13 +461,13 @@ a {
   display: flex;
   align-items: center;
   background: #000;
-  border-radius: 10px;
+  border-radius: 8px;
   transition: border-radius 0.4s cubic-bezier(0.35, 0.35, 0, 1);
 }
 
 .nav-float:hover .nav-pill,
 .nav-float.open .nav-pill {
-  border-radius: 999px;
+  border-radius: 8px;
 }
 
 .nav-links {
@@ -504,8 +504,8 @@ a {
 }
 
 .nav-toggle {
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   flex-shrink: 0;
   border: none;
   background: transparent;
@@ -723,11 +723,16 @@ a {
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   margin-bottom: 1.75rem;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  transition: box-shadow 0.4s ease;
+}
+
+.music-card:hover .music-art {
+  box-shadow: 0 20px 45px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 /* Record-spin on hover */
@@ -738,7 +743,7 @@ a {
 }
 
 .music-card:hover .music-art {
-  animation: music-spin 6s linear infinite;
+  animation: music-spin 20s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -900,11 +905,12 @@ a {
   text-transform: uppercase;
   color: rgba(255, 209, 119, 0.4);
   width: fit-content;
-  transition: color 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.35, 0.35, 0, 1);
 }
 
 .list-cat-link:hover {
   color: #ffd177;
+  transform: translateX(6px);
 }
 
 .list-section {
@@ -932,10 +938,18 @@ a {
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 0.7fr) auto;
   gap: 1.5rem;
   align-items: center;
-  padding: 1.4rem 0;
+  padding: 1.4rem 0.5rem; /* Slight horizontal padding by default */
   border-top: 1px solid rgba(255, 209, 119, 0.2);
+  border-radius: 12px;
   text-decoration: none;
   color: inherit;
+  transition: all 0.35s cubic-bezier(0.35, 0.35, 0, 1);
+}
+
+.list-row:hover {
+  background-color: rgba(255, 209, 119, 0.04);
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 
 .list-row-title {

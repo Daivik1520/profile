@@ -30,10 +30,5 @@ export default function LiveClock() {
     return () => clearInterval(interval);
   }, []);
 
-  return (
-    <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
-      <div className="h4 b">{date}</div>
-      <div className="h4 b" style={{ textAlign: "right" }}>{time}</div>
-    </div>
-  );
+  return <>{time.toUpperCase()}</>;
 }

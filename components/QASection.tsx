@@ -1,5 +1,8 @@
 "use client";
 
+import TextSplitAnimation from "./TextSplitAnimation";
+import { motion } from "framer-motion";
+
 interface QA {
   q: string;
   a: string;
@@ -42,16 +45,23 @@ export default function QASection() {
     <div className="section me-section">
       <div className="qa-grid">
         <div>
-          {qas.map((item) => (
-            <div key={item.q} className="qa-item">
+          {qas.map((item, index) => (
+            <motion.div
+              key={item.q}
+              className="qa-item"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.6, delay: Math.min(index * 0.1, 0.3), ease: [0.35, 0.35, 0, 1] }}
+            >
               <div className="b1 qa-question">{item.q}</div>
               <p className="b2">{item.a}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         <div className="qa-mark-wrap" aria-hidden>
-          <div className="qa-mark">Q&amp;A</div>
+          <TextSplitAnimation text="Q&A" className="qa-mark" tag="div" splitBy="letter" />
         </div>
       </div>
     </div>
